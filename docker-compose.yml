@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  db-prontuario:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: luiz2231   # 🔑 aqui você define sua senha
+      POSTGRES_DB: prontuariodb
+    ports:
+      - "5435:5432"
+    volumes:
+      - prontuario_data:/var/lib/postgresql/data
+
+  ms-prontuario-animal:
+    build: .
+    container_name: ms-prontuario-animal
+    ports:
+      - "8000:8000"
+    environment:
+      DB_USER: postgres
+      DB_PASS: luiz2231             # 🔑 mesma senha aqui
+      DB_HOST: db-prontuario
+      DB_NAME: prontuariodb
+    depends_on:
+      - db-prontuario
+
+volumes:
+  prontuario_data:
