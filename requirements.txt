@@ -1,8 +1,7 @@
-fastapi
-uvicorn[standard]
-sqlalchemy
+flask
+flask-sqlalchemy
+flask-cors
+requests
+python-dotenv
 psycopg2-binary
-pydantic[email]
-python-jose[cryptography]   # JWT
-passlib[bcrypt]             # hash de senha (caso precise login de usuários)
-python-multipart            # upload de arquivos
+flasgger

@@ -1,0 +1,230 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "MS Prontuário Animal API"
+  description: "API RESTful para gerenciamento de prontuários de animais"
+host: "localhost:8001"
+basePath: "/api/v1"
+schemes:
+  - http
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  Animal:
+    type: object
+    properties:
+      id:
+        type: integer
+      nome:
+        type: string
+      especie:
+        type: string
+      raca:
+        type: string
+      idade:
+        type: integer
+      peso_atual:
+        type: number
+      sexo:
+        type: string
+      cor:
+        type: string
+      nome_tutor:
+        type: string
+      cpf_tutor:
+        type: string
+      telefone_tutor:
+        type: string
+      email_tutor:
+        type: string
+      endereco_tutor:
+        type: string
+      ativo:
+        type: boolean
+      data_cadastro:
+        type: string
+        format: date-time
+      observacoes:
+        type: string
+
+  Consulta:
+    type: object
+    properties:
+      id:
+        type: integer
+      animal_id:
+        type: integer
+      veterinario:
+        type: string
+      tipo_consulta:
+        type: string
+        enum: ["rotina", "emergência"]
+      peso_consulta:
+        type: number
+      diagnostico:
+        type: string
+      tratamento:
+        type: string
+      medicamentos:
+        type: string
+      observacoes:
+        type: string
+      imagens_exames:
+        type: array
+        items:
+          type: string
+      retorno_em:
+        type: string
+        format: date
+      data_consulta:
+        type: string
+        format: date-time
+
+paths:
+  /health:
+    get:
+      summary: "Verificar status do microserviço"
+      responses:
+        200:
+          description: "Serviço ativo"
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              service:
+                type: string
+
+  /animais/:
+    get:
+      summary: "Listar todos os animais ativos"
+      responses:
+        200:
+          description: "Lista de animais"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Animal"
+
+    post:
+      summary: "Cadastrar novo animal"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Animal"
+      responses:
+        201:
+          description: "Animal criado"
+          schema:
+            $ref: "#/definitions/Animal"
+
+  /animais/{id}:
+    get:
+      summary: "Buscar animal por ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Animal encontrado"
+          schema:
+            $ref: "#/definitions/Animal"
+        404:
+          description: "Animal não encontrado"
+
+    put:
+      summary: "Atualizar animal por ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: "#/definitions/Animal"
+      responses:
+        200:
+          description: "Animal atualizado"
+          schema:
+            $ref: "#/definitions/Animal"
+
+    delete:
+      summary: "Excluir ou inativar animal"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Animal removido ou inativado"
+
+  /animais/{id}/historico:
+    get:
+      summary: "Histórico médico completo do animal"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Histórico médico"
+          schema:
+            type: object
+            properties:
+              animal:
+                $ref: "#/definitions/Animal"
+              consultas:
+                type: array
+                items:
+                  $ref: "#/definitions/Consulta"
+
+  /consultas/:
+    post:
+      summary: "Registrar nova consulta"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Consulta"
+      responses:
+        201:
+          description: "Consulta registrada"
+          schema:
+            $ref: "#/definitions/Consulta"
+
+  /consultas/{id}:
+    get:
+      summary: "Buscar consulta por ID"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: "Consulta encontrada"
+          schema:
+            $ref: "#/definitions/Consulta"
+
+  /consultas/recentes:
+    get:
+      summary: "Listar últimas 20 consultas"
+      responses:
+        200:
+          description: "Consultas recentes"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Consulta"
