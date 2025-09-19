@@ -14,7 +14,7 @@ def validar_token_jwt(f):
         
         try:
             # Validar token com o serviço de autenticação
-            auth_url = os.getenv('AUTH_SERVICE_URL', 'https://02321cb3f955.ngrok-free.app/api/v1')
+            auth_url = os.getenv('AUTH_SERVICE_URL')
             response = requests.get(
                 f"{auth_url}/profile/me/",
                 headers={"Authorization": auth_header},
