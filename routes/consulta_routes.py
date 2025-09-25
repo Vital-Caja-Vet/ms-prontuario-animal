@@ -3,7 +3,6 @@ from app import db
 from models.animal import Animal
 from models.consulta import Consulta
 from middleware.auth import validar_token_jwt
-from datetime import datetime
 import json
 
 consulta_bp = Blueprint('consulta', __name__)
@@ -16,7 +15,7 @@ def registrar_consulta():
         data = request.get_json()
         
         # Validações obrigatórias
-        required_fields = ['animal_id', 'veterinario']
+        required_fields = ['animal_id']
         for field in required_fields:
             if not data.get(field):
                 return jsonify({"error": f"Campo '{field}' é obrigatório"}), 400
@@ -29,16 +28,11 @@ def registrar_consulta():
         # Criar nova consulta
         nova_consulta = Consulta(
             animal_id=data['animal_id'],
-            tipo_consulta=data.get('tipo_consulta', 'rotina'),
-            veterinario=data['veterinario'],
             peso_consulta=data.get('peso_consulta'),
-            temperatura=data.get('temperatura'),
+            cirurgias=data.get('cirurgias'),
             diagnostico=data.get('diagnostico'),
             tratamento=data.get('tratamento'),
-            medicamentos=data.get('medicamentos'),
-            observacoes=data.get('observacoes'),
             imagens_exames=json.dumps(data.get('imagens_exames', [])) if data.get('imagens_exames') else None,
-            retorno_em=datetime.strptime(data['retorno_em'], '%Y-%m-%d').date() if data.get('retorno_em') else None
         )
         
         # Atualizar peso atual do animal se informado

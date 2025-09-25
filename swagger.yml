@@ -58,28 +58,18 @@ definitions:
         type: integer
       animal_id:
         type: integer
-      veterinario:
-        type: string
-      tipo_consulta:
-        type: string
-        enum: ["rotina", "emergência"]
       peso_consulta:
         type: number
+      cirurgias:
+        type: string
       diagnostico:
         type: string
       tratamento:
-        type: string
-      medicamentos:
-        type: string
-      observacoes:
         type: string
       imagens_exames:
         type: array
         items:
           type: string
-      retorno_em:
-        type: string
-        format: date
       data_consulta:
         type: string
         format: date-time

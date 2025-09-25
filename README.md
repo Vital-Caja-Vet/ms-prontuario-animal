@@ -74,5 +74,5 @@ Importe a coleção Postman e configure o token JWT para testar os endpoints.
 
 - Nome do Pet do tutor deve ser único no sistema. Não permite o mesmo nome e Pet no sistema, mas pode diferenciar colocando numerações e até descrições.
 - Animais com histórico médico são inativados, não excluídos.
-- Consultas registram diagnósticos, tratamentos, medicamentos e peso.
+- Consultas registram diagnósticos, tratamentos, cirurgias e peso.
 - Imagens são armazenadas como URLs JSON.
