@@ -11,14 +11,12 @@ class Consulta(db.Model):
 
     data_consulta = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # Dados da consulta (conforme escopo)
     peso_consulta = db.Column(db.Float)
     cirurgias = db.Column(db.Text)
     diagnostico = db.Column(db.Text)
     tratamento = db.Column(db.Text)
 
-    # Anexos (URLs de imagens)
-    imagens_exames = db.Column(db.Text)  # JSON string com URLs
+    imagens_exames = db.Column(db.Text)
 
     def to_dict(self):
         return {

@@ -6,26 +6,23 @@ class Animal(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    especie = db.Column(db.String(50), nullable=False)  # cão, gato, etc
+    especie = db.Column(db.String(50), nullable=False)
     raca = db.Column(db.String(100))
     idade = db.Column(db.Integer)
     peso_atual = db.Column(db.Float)
-    sexo = db.Column(db.String(10))  # macho, fêmea
+    sexo = db.Column(db.String(10))
     cor = db.Column(db.String(50))
     
-    # Dados do tutor
     nome_tutor = db.Column(db.String(100), nullable=False)
     cpf_tutor = db.Column(db.String(14), nullable=False)
     telefone_tutor = db.Column(db.String(15))
     email_tutor = db.Column(db.String(100))
     endereco_tutor = db.Column(db.Text)
     
-    # Controle
     ativo = db.Column(db.Boolean, default=True)
     data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
     observacoes = db.Column(db.Text)
     
-    # Relacionamento com consultas
     consultas = db.relationship('Consulta', backref='animal', lazy=True)
     
     def to_dict(self):

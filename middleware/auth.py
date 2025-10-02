@@ -9,10 +9,8 @@ from flask import request, jsonify
 def validar_token_jwt(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Pegar token do header Authorization e normalizar
         auth_header = request.headers.get('Authorization', '').strip()
 
-        # Aceitar formatos: "Bearer <token>", "Token <token>" ou cru
         match = re.match(r'^\s*(?:Bearer|Token)\s+(.+)$', auth_header, flags=re.IGNORECASE)
         token = match.group(1).strip() if match else auth_header
 
@@ -20,18 +18,16 @@ def validar_token_jwt(f):
             return jsonify({"error": "Token de autorização requerido"}), 401
 
         try:
-            # Validar token com o serviço de autenticação
             auth_url = (os.getenv('AUTH_SERVICE_URL') or '').rstrip('/')
             response = requests.get(
                 f"{auth_url}/profile/me/",
-                headers={"Authorization": token},  # enviar token cru
+                headers={"Authorization": token},
                 timeout=10,
             )
 
             if response.status_code != 200:
                 return jsonify({"error": "Token inválido"}), 401
 
-            # Anexar dados do usuário à request
             request.user_data = response.json()
 
         except requests.RequestException as e:

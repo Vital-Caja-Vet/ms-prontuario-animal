@@ -3,7 +3,7 @@ info:
   version: "1.0.0"
   title: "MS Prontuário Animal API"
   description: "API RESTful para gerenciamento de prontuários de animais"
-host: "localhost:8001"
+host: "localhost:8090"
 basePath: "/api/v1"
 schemes:
   - http
@@ -117,11 +117,17 @@ paths:
   /animais/{id}:
     get:
       summary: "Buscar animal por ID"
+      description: "Por padrão retorna 404 para animais inativos. Use include_inativos=true para retornar também animais inativos."
       parameters:
         - name: id
           in: path
           required: true
           type: integer
+        - name: include_inativos
+          in: query
+          required: false
+          type: boolean
+          description: "Quando true, permite retornar animais inativos"
       responses:
         200:
           description: "Animal encontrado"
@@ -161,6 +167,7 @@ paths:
   /animais/{id}/historico:
     get:
       summary: "Histórico médico completo do animal"
+      description: "Disponível também para animais inativos (soft delete)."
       parameters:
         - name: id
           in: path
@@ -178,6 +185,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/definitions/Consulta"
+              total_consultas:
+                type: integer
 
   /consultas/:
     post:
@@ -218,3 +227,4 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Consulta"
+

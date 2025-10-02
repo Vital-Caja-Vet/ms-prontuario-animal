@@ -25,7 +25,6 @@ def create_database_if_not_exists():
     info = _parse_database_url(db_url)
     db_name = info["dbname"]
 
-    # Permite sobrescrever via variáveis dedicadas, mas por padrão usa os dados do DATABASE_URL
     admin_db = os.getenv("POSTGRES_ADMIN_DB", "postgres")
     admin_host = os.getenv("POSTGRES_HOST", info["host"])
     admin_port = int(os.getenv("POSTGRES_PORT", info["port"]))
